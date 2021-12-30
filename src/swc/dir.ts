@@ -114,6 +114,7 @@ async function initialCompilation(cliOptions: CliOptions, swcOptions: Options) {
   const [compilable, copyable] = slitCompilableAndCopyable(
     sourceFiles,
     extensions,
+    swcOptions,
     copyFiles
   );
 

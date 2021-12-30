@@ -2,6 +2,7 @@ import glob from "fast-glob";
 import slash from "slash";
 import { stat } from "fs";
 import { join, basename, extname } from "path";
+import { Options } from "@swc/core";
 
 /**
  * Find all input files based on source globs
@@ -53,19 +54,39 @@ export function isCompilableExtension(
   return allowedExtension.includes(ext);
 }
 
+export function isExclude(filename: string, { exclude }: Options): boolean {
+  if (!exclude) {
+    return false;
+  }
+  if (typeof exclude === "string") {
+    return RegExp(exclude).test(filename);
+  }
+  if (exclude instanceof Array) {
+    for (const it of exclude) {
+      if (RegExp(it).test(filename)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 /**
  * Split file list to files that can be compiled and copied
  */
 export function slitCompilableAndCopyable(
   files: string[],
   allowedExtension: string[],
+  swcOptions: Options,
   copyFiles: boolean
 ): Split {
   const compilable: string[] = [];
   const copyable: string[] = [];
 
   for (const file of files) {
-    const isCompilable = isCompilableExtension(file, allowedExtension);
+    const isCompilable =
+      isCompilableExtension(file, allowedExtension) &&
+      !isExclude(file, swcOptions);
 
     if (isCompilable) {
       compilable.push(file);

@@ -1,5 +1,6 @@
 import commander from "commander";
 import { DEFAULT_EXTENSIONS, version as swcCoreVersion } from "@swc/core";
+import { getSwcrcInfo } from "./util";
 import type { Options } from "@swc/core";
 
 const pkg = require("../../package.json");
@@ -211,6 +212,11 @@ export default function parserArgs(args: string[]) {
     configFile: opts.configFile,
     swcrc: opts.swcrc,
   };
+
+  const swcrcConfig = getSwcrcInfo();
+  if (swcrcConfig) {
+    swcOptions.exclude = swcrcConfig.exclude;
+  }
 
   if (opts.sourceMaps !== undefined) {
     swcOptions.sourceMaps = opts.sourceMaps;

@@ -67,6 +67,7 @@ describe("slitCompilableAndCopyable", () => {
     const [compilable, copyable] = slitCompilableAndCopyable(
       files,
       extensions,
+      {},
       true
     );
 
@@ -79,6 +80,7 @@ describe("slitCompilableAndCopyable", () => {
     const [compilable, copyable] = slitCompilableAndCopyable(
       files,
       extensions,
+      {},
       false
     );
 
