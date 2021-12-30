@@ -11,7 +11,7 @@ coverage
 integration-tests
 
 # Build output
-lib
+# lib
 
 # Logs
 logs
