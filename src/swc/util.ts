@@ -124,6 +124,6 @@ export function getSwcrcInfo(): false | swc.Options {
     const json = JSON.parse(info);
     return json;
   } catch (err) {
-    throw new Error(`Failed to parse .swcrc use JSON.parse`);
+    throw new Error(`Failed to parse .swcrc`);
   }
 }
