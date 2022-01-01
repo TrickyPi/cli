@@ -57,7 +57,7 @@ export async function compile(
       result.map = JSON.stringify(sourceMap);
     }
     return result;
-  } catch (err) {
+  } catch (err: any) {
     if (!err.message.includes("ignored by .swcrc")) {
       throw err;
     }
