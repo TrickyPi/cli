@@ -54,6 +54,9 @@ export function isCompilableExtension(
   return allowedExtension.includes(ext);
 }
 
+/**
+ * isExclude
+ */
 export function isExclude(filename: string, { exclude }: Options): boolean {
   if (!exclude) {
     return false;
@@ -71,6 +74,17 @@ export function isExclude(filename: string, { exclude }: Options): boolean {
   return false;
 }
 
+export function isCompilableFile(
+  filename: string,
+  allowedExtension: string[],
+  swcOptions: Options
+) {
+  return (
+    isCompilableExtension(filename, allowedExtension) &&
+    !isExclude(filename, swcOptions)
+  );
+}
+
 /**
  * Split file list to files that can be compiled and copied
  */
@@ -84,9 +98,7 @@ export function slitCompilableAndCopyable(
   const copyable: string[] = [];
 
   for (const file of files) {
-    const isCompilable =
-      isCompilableExtension(file, allowedExtension) &&
-      !isExclude(file, swcOptions);
+    const isCompilable = isCompilableFile(file, allowedExtension, swcOptions);
 
     if (isCompilable) {
       compilable.push(file);

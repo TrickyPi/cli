@@ -7,7 +7,7 @@ import { compile } from "./util";
 import { outputResult } from "./compile";
 import {
   globSources,
-  isCompilableExtension,
+  isCompilableFile,
   slitCompilableAndCopyable,
   watchSources,
 } from "./sources";
@@ -234,7 +234,7 @@ async function watchCompilation(cliOptions: CliOptions, swcOptions: Options) {
   });
   watcher.on("unlink", async filename => {
     try {
-      if (isCompilableExtension(filename, extensions)) {
+      if (isCompilableFile(filename, extensions, swcOptions)) {
         await unlink(getDest(filename, outDir, ".js"));
       } else if (copyFiles) {
         await unlink(getDest(filename, outDir));
@@ -247,7 +247,7 @@ async function watchCompilation(cliOptions: CliOptions, swcOptions: Options) {
   });
   for (const type of ["add", "change"]) {
     watcher.on(type, async filename => {
-      if (isCompilableExtension(filename, extensions)) {
+      if (isCompilableFile(filename, extensions, swcOptions)) {
         try {
           const start = process.hrtime();
           const result = await handleCompile(
